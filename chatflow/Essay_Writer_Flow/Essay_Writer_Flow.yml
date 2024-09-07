@@ -1,0 +1,679 @@
+app:
+  description: Essay writing workflow from planning to final draft with critiques.
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: advanced-chat
+  name: Essay Writer Flow
+kind: app
+version: 0.1.1
+workflow:
+  conversation_variables:
+  - description: ''
+    id: 7225a261-753f-49c2-98fc-fe7cdf34ce2a
+    name: revision_numbers
+    value:
+    - 1.0
+    - 2.0
+    - 3.0
+    value_type: array[number]
+  - description: The intermediate result is generated based on the content.
+    id: f68293c5-804e-4ee6-9c77-6aeff3bb6c2e
+    name: str_draft
+    value: ''
+    value_type: string
+  - description: The content can be the base for the essay to write.
+    id: 5c85fd32-c8bc-4d60-b778-e3b6e227e51d
+    name: str_content
+    value: ''
+    value_type: string
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1725729183446-source-llm-target
+      selected: false
+      source: '1725729183446'
+      sourceHandle: source
+      target: llm
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: llm-source-1725729456382-target
+      selected: false
+      source: llm
+      sourceHandle: source
+      target: '1725729456382'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: assigner
+        targetType: iteration
+      id: 1725729859892-source-1725737952050-target
+      selected: false
+      source: '1725729859892'
+      sourceHandle: source
+      target: '1725737952050'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1725737952050'
+        sourceType: llm
+        targetType: assigner
+      id: 1725738718285-source-1725738914603-target
+      source: '1725738718285'
+      sourceHandle: source
+      target: '1725738914603'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1725737952050'
+        sourceType: assigner
+        targetType: llm
+      id: 1725738914603-source-1725738968584-target
+      source: '1725738914603'
+      sourceHandle: source
+      target: '1725738968584'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1725737952050'
+        sourceType: llm
+        targetType: llm
+      id: 1725738968584-source-1725739033938-target
+      source: '1725738968584'
+      sourceHandle: source
+      target: '1725739033938'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: false
+        sourceType: iteration
+        targetType: code
+      id: 1725737952050-source-1725741391035-target
+      source: '1725737952050'
+      sourceHandle: source
+      target: '1725741391035'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: code
+        targetType: answer
+      id: 1725741391035-source-answer-target
+      source: '1725741391035'
+      sourceHandle: source
+      target: answer
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: tool
+      id: 1725729456382-source-1725742857419-target
+      source: '1725729456382'
+      sourceHandle: source
+      target: '1725742857419'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: tool
+        targetType: assigner
+      id: 1725742857419-source-1725729859892-target
+      source: '1725742857419'
+      sourceHandle: source
+      target: '1725729859892'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: true
+        iteration_id: '1725737952050'
+        sourceType: llm
+        targetType: tool
+      id: 1725739033938-source-1725743002314-target
+      source: '1725739033938'
+      sourceHandle: source
+      target: '1725743002314'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    - data:
+        isInIteration: true
+        iteration_id: '1725737952050'
+        sourceType: tool
+        targetType: assigner
+      id: 1725743002314-source-1725739233620-target
+      source: '1725743002314'
+      sourceHandle: source
+      target: '1725739233620'
+      targetHandle: target
+      type: custom
+      zIndex: 1002
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables: []
+      height: 54
+      id: '1725729183446'
+      position:
+        x: 83.89495556828848
+        y: 569.8993977341605
+      positionAbsolute:
+        x: 83.89495556828848
+        y: 569.8993977341605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: 'Make plan
+
+          '
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-001
+          provider: vertex_ai
+        prompt_template:
+        - id: 28bff7e0-fe6b-46ab-b0a8-17b8a61796be
+          role: system
+          text: You are an expert writer tasked with writing a high level outline
+            of an essay.  Write such an outline for the user provided topic. Give
+            an outline of the essay along with any relevant notes or instructions
+            for the sections.
+        - id: 29789e20-eca4-4c55-aba8-71702752155c
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Plan LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      height: 126
+      id: llm
+      position:
+        x: 400.4918889111042
+        y: 569.8993977341605
+      positionAbsolute:
+        x: 400.4918889111042
+        y: 569.8993977341605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        answer: '{{#1725741391035.last_draft#}}'
+        desc: ''
+        selected: false
+        title: Answer
+        type: answer
+        variables: []
+      height: 107
+      id: answer
+      position:
+        x: 3599.6000750256107
+        y: 569.8993977341605
+      positionAbsolute:
+        x: 3599.6000750256107
+        y: 569.8993977341605
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Generate queries for init content search later on internet.
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-001
+          provider: vertex_ai
+        prompt_template:
+        - id: e734004c-b6af-42bf-97b1-550d489ef3f2
+          role: system
+          text: You are a researcher charged with providing information that can be
+            used when writing the following essay. Generate a list of search queries
+            that will gather any relevant information. Only generate 3 queries max
+            and merge all queries into one readable query sentence.
+        - id: 6f0869a7-eb73-494a-9acf-0772508ef4f1
+          role: user
+          text: '{{#sys.query#}}'
+        selected: false
+        title: Init-content queries LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      height: 142
+      id: '1725729456382'
+      position:
+        x: 718.1565943070616
+        y: 569.8993977341605
+      positionAbsolute:
+        x: 718.1565943070616
+        y: 569.8993977341605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - str_content
+        desc: ''
+        input_variable_selector:
+        - '1725742857419'
+        - text
+        selected: false
+        title: Assign init-content
+        type: assigner
+        write_mode: over-write
+      height: 132
+      id: '1725729859892'
+      position:
+        x: 1030.9031947523224
+        y: 569.8993977341605
+      positionAbsolute:
+        x: 1030.9031947523224
+        y: 569.8993977341605
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        height: 272
+        iterator_selector:
+        - conversation
+        - revision_numbers
+        output_selector:
+        - '1725738718285'
+        - text
+        output_type: array[string]
+        selected: false
+        startNodeType: llm
+        start_node_id: '1725738718285'
+        title: Iteration
+        type: iteration
+        width: 1948
+      height: 272
+      id: '1725737952050'
+      position:
+        x: 1325.0191427396999
+        y: 727.7701202708788
+      positionAbsolute:
+        x: 1325.0191427396999
+        y: 727.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 1948
+      zIndex: 1
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        isIterationStart: true
+        iteration_id: '1725737952050'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-001
+          provider: vertex_ai
+        prompt_template:
+        - id: d95a75ca-9ee2-4930-bfa3-95b46f95d7d5
+          role: system
+          text: "You are an essay assistant tasked with writing excellent 5-paragraph\
+            \ essays. Generate the best essay possible for the user's request and\
+            \ the initial outline. If the user provides critique, respond with a revised\
+            \ version of your previous attempts. Utilize all the information below\
+            \ as needed: \n\n------\n\n{{#conversation.str_content#}}\n"
+        - id: 0088afbd-f726-424c-be60-39bced94fc71
+          role: user
+          text: '{{#sys.query#}}
+
+
+            Here is my plan:
+
+
+            {{#llm.text#}}'
+        selected: false
+        title: Generate draft LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 98
+      id: '1725738718285'
+      parentId: '1725737952050'
+      position:
+        x: 117
+        y: 85
+      positionAbsolute:
+        x: 1442.0191427396999
+        y: 812.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1001
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - str_draft
+        desc: ''
+        input_variable_selector:
+        - '1725738718285'
+        - text
+        isInIteration: true
+        iteration_id: '1725737952050'
+        selected: false
+        title: Set draft
+        type: assigner
+        write_mode: over-write
+      extent: parent
+      height: 132
+      id: '1725738914603'
+      parentId: '1725737952050'
+      position:
+        x: 421
+        y: 85
+      positionAbsolute:
+        x: 1746.0191427396999
+        y: 812.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: ''
+        isInIteration: true
+        iteration_id: '1725737952050'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-001
+          provider: vertex_ai
+        prompt_template:
+        - id: 908f4528-00e4-4a2d-a238-c1bd24748935
+          role: system
+          text: You are a teacher grading an essay submission. Generate critique and
+            recommendations for the user's submission. Provide detailed recommendations,
+            including requests for length, depth, style, etc.
+        - id: 672fc541-0dd9-41ac-9f37-0c292cf61178
+          role: user
+          text: '{{#conversation.str_draft#}}'
+        selected: false
+        title: Reflection on draft
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 98
+      id: '1725738968584'
+      parentId: '1725737952050'
+      position:
+        x: 725
+        y: 85
+      positionAbsolute:
+        x: 2050.0191427397
+        y: 812.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Generate critique queries for search updating content.
+        isInIteration: true
+        iteration_id: '1725737952050'
+        model:
+          completion_params:
+            temperature: 0.7
+          mode: chat
+          name: gemini-1.5-pro-001
+          provider: vertex_ai
+        prompt_template:
+        - id: b2f78137-043f-4224-bc1e-1a37c3c24bfa
+          role: system
+          text: You are a researcher charged with providing information that can be
+            used when making any requested revisions (as outlined below). Generate
+            a list of search queries that will gather any relevant information. Only
+            generate 3 queries max and merge all queries into one readable query sentence.
+        - id: 4ca0f254-4002-4e26-9584-ed1bc51df0ce
+          role: user
+          text: '{{#1725738968584.text#}}'
+        selected: false
+        title: 'Critique queries LLM '
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      extent: parent
+      height: 142
+      id: '1725739033938'
+      parentId: '1725737952050'
+      position:
+        x: 1027.704789432367
+        y: 85
+      positionAbsolute:
+        x: 2352.723932172067
+        y: 812.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        assigned_variable_selector:
+        - conversation
+        - str_content
+        desc: Update new content.
+        input_variable_selector:
+        - '1725743002314'
+        - text
+        isInIteration: true
+        iteration_id: '1725737952050'
+        selected: false
+        title: Set content for critique
+        type: assigner
+        write_mode: over-write
+      extent: parent
+      height: 160
+      id: '1725739233620'
+      parentId: '1725737952050'
+      position:
+        x: 1635.704789432367
+        y: 85
+      positionAbsolute:
+        x: 2960.723932172067
+        y: 812.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    - data:
+        code: "\ndef main(draft_list:list) -> str:\n    last_draft = draft_list[-1].strip()\n\
+          \    return { \n        'last_draft': last_draft\n    }\n"
+        code_language: python3
+        desc: ''
+        outputs:
+          last_draft:
+            children: null
+            type: string
+        selected: false
+        title: Filter last draft
+        type: code
+        variables:
+        - value_selector:
+          - '1725737952050'
+          - output
+          variable: draft_list
+      height: 54
+      id: '1725741391035'
+      position:
+        x: 3312.2585972495235
+        y: 727.7701202708788
+      positionAbsolute:
+        x: 3312.2585972495235
+        y: 727.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        provider_id: duckduckgo
+        provider_name: duckduckgo
+        provider_type: builtin
+        selected: false
+        title: 'Gen init-Content '
+        tool_configurations:
+          model: gpt-4o-mini
+        tool_label: DuckDuckGo AI Chat
+        tool_name: ddgo_ai
+        tool_parameters:
+          query:
+            type: mixed
+            value: '{{#1725729456382.text#}}'
+        type: tool
+      height: 90
+      id: '1725742857419'
+      position:
+        x: 718.1565943070616
+        y: 738.232280204263
+      positionAbsolute:
+        x: 718.1565943070616
+        y: 738.232280204263
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        isInIteration: true
+        iteration_id: '1725737952050'
+        provider_id: duckduckgo
+        provider_name: duckduckgo
+        provider_type: builtin
+        selected: false
+        title: Gen updating content
+        tool_configurations:
+          model: gpt-4o-mini
+        tool_label: DuckDuckGo AI Chat
+        tool_name: ddgo_ai
+        tool_parameters:
+          query:
+            type: mixed
+            value: '{{#1725739033938.text#}}'
+        type: tool
+      extent: parent
+      height: 90
+      id: '1725743002314'
+      parentId: '1725737952050'
+      position:
+        x: 1331.704789432367
+        y: 85
+      positionAbsolute:
+        x: 2656.723932172067
+        y: 812.7701202708788
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+      zIndex: 1002
+    viewport:
+      x: 194.7768467820665
+      y: 102.27622292032754
+      zoom: 0.5702985571880202
