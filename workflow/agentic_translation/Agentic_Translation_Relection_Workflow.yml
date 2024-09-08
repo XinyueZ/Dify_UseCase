@@ -1,0 +1,363 @@
+app:
+  description: 'Implemention of [Translation Agent: Agentic translation using reflection
+    workflow](https://github.com/andrewyng/translation-agent/tree/main)'
+  icon: 🤖
+  icon_background: '#FFEAD5'
+  mode: workflow
+  name: Agentic Translation Relection Workflow
+kind: app
+version: 0.1.1
+workflow:
+  conversation_variables: []
+  environment_variables: []
+  features:
+    file_upload:
+      image:
+        enabled: false
+        number_limits: 3
+        transfer_methods:
+        - local_file
+        - remote_url
+    opening_statement: ''
+    retriever_resource:
+      enabled: true
+    sensitive_word_avoidance:
+      enabled: false
+    speech_to_text:
+      enabled: false
+    suggested_questions: []
+    suggested_questions_after_answer:
+      enabled: false
+    text_to_speech:
+      enabled: false
+      language: ''
+      voice: ''
+  graph:
+    edges:
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: 1725794998735-source-1725795005689-target
+      source: '1725794998735'
+      sourceHandle: source
+      target: '1725795005689'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: 1725795005689-source-1725795012243-target
+      source: '1725795005689'
+      sourceHandle: source
+      target: '1725795012243'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: start
+        targetType: llm
+      id: 1725794971908-source-1725797569932-target
+      source: '1725794971908'
+      sourceHandle: source
+      target: '1725797569932'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: llm
+      id: 1725797569932-source-1725794998735-target
+      source: '1725797569932'
+      sourceHandle: source
+      target: '1725794998735'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    - data:
+        isInIteration: false
+        sourceType: llm
+        targetType: end
+      id: 1725795012243-source-1725794978395-target
+      source: '1725795012243'
+      sourceHandle: source
+      target: '1725794978395'
+      targetHandle: target
+      type: custom
+      zIndex: 0
+    nodes:
+    - data:
+        desc: ''
+        selected: false
+        title: Start
+        type: start
+        variables:
+        - label: target_lang
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: target_lang
+        - label: source_text
+          max_length: null
+          options: []
+          required: true
+          type: paragraph
+          variable: source_text
+        - label: country
+          max_length: 48
+          options: []
+          required: true
+          type: text-input
+          variable: country
+      height: 142
+      id: '1725794971908'
+      position:
+        x: -301.80885458867215
+        y: 213.1705126081646
+      positionAbsolute:
+        x: -301.80885458867215
+        y: 213.1705126081646
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        desc: ''
+        outputs:
+        - value_selector:
+          - '1725795012243'
+          - text
+          variable: result
+        selected: false
+        title: End
+        type: end
+      height: 90
+      id: '1725794978395'
+      position:
+        x: 1200.4944629233937
+        y: 213.1705126081646
+      positionAbsolute:
+        x: 1200.4944629233937
+        y: 213.1705126081646
+      selected: true
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Fast and init translation.
+        model:
+          completion_params:
+            temperature: 0
+            top_k: 5
+            top_p: 1
+          mode: chat
+          name: gemini-1.5-flash-001
+          provider: vertex_ai
+        prompt_template:
+        - id: faffbb24-5ff0-4a1c-835f-6b7473d6734d
+          role: system
+          text: You are an expert linguist, specializing in translation from {{#1725797569932.text#}}
+            to {{#1725794971908.target_lang#}}.
+        - id: 0d498c7a-a242-4c50-af6d-51ea318e4de7
+          role: user
+          text: "This is an {{#1725797569932.text#}} to {{#1725794971908.target_lang#}}\
+            \ translation, please provide the {{#1725794971908.target_lang#}} translation\
+            \ for this text. \n\nDo not provide any explanations or text apart from\
+            \ the translation.\n \n{{#1725797569932.text#}}: {{#1725794971908.source_text#}}\n\
+            \n {{#1725794971908.target_lang#}}:"
+        selected: false
+        title: Init-translation LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      height: 126
+      id: '1725794998735'
+      position:
+        x: 303.47450388787195
+        y: 394.3361395246812
+      positionAbsolute:
+        x: 303.47450388787195
+        y: 394.3361395246812
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Do reflection on the init-translation and give feedback.
+        model:
+          completion_params:
+            temperature: 0.8
+            top_k: 5
+            top_p: 1
+          mode: chat
+          name: gemini-1.5-pro-001
+          provider: vertex_ai
+        prompt_template:
+        - id: 1b31abcb-7e49-4cc8-a593-20aaa5d936b4
+          role: system
+          text: You are an expert linguist specializing in translation from {{#1725797569932.text#}}
+            to {{#1725794971908.target_lang#}}. You will be provided with a source
+            text and its translation and your goal is to improve the translation.
+        - id: a91fcc10-d0df-45d0-98b9-2e42c9db1e57
+          role: user
+          text: "Your task is to carefully read a source text and a translation from\
+            \ {{#1725797569932.text#}} to {{#1725794971908.target_lang#}}, and then\
+            \ give constructive criticism and helpful suggestions to improve the translation.\
+            \ The final style and tone of the translation should match the style of\
+            \ {{#1725794971908.target_lang#}} colloquially spoken in {{#1725794971908.country#}}.\n\
+            \nThe source text and initial translation, delimited by XML tags <SOURCE_TEXT></SOURCE_TEXT>\
+            \ and <TRANSLATION></TRANSLATION>, are as follows:\n\n<SOURCE_TEXT>\n\
+            {{#1725794971908.source_text#}}\n</SOURCE_TEXT>\n\n<TRANSLATION>\n{{#1725794998735.text#}}\n\
+            </TRANSLATION>\n\nWhen writing suggestions, pay attention to whether there\
+            \ are ways to improve the translation's \n(i) accuracy (by correcting\
+            \ errors of addition, mistranslation, omission, or untranslated text),\n\
+            (ii) fluency (by applying {{#1725794971908.target_lang#}} grammar, spelling\
+            \ and punctuation rules, and ensuring there are no unnecessary repetitions),\n\
+            (iii) style (by ensuring the translations reflect the style of the source\
+            \ text and take into account any cultural context),\n(iv) terminology\
+            \ (by ensuring terminology use is consistent and reflects the source text\
+            \ domain; and by only ensuring you use equivalent idioms {{#1725794971908.target_lang#}}).\n\
+            Write a list of specific, helpful and constructive suggestions for improving\
+            \ the translation.\nEach suggestion should address one specific part of\
+            \ the translation.\nOutput only the suggestions and nothing else."
+        selected: false
+        title: Reflection LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      height: 142
+      id: '1725795005689'
+      position:
+        x: 600.0691821815956
+        y: 394.3361395246812
+      positionAbsolute:
+        x: 600.0691821815956
+        y: 394.3361395246812
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Final translation by the improvement of reflection output.
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: gemini-1.5-flash-001
+          provider: vertex_ai
+        prompt_template:
+        - id: 3a4d69a9-6dc9-4597-bf92-9a31af70d36c
+          role: system
+          text: You are an expert linguist, specializing in translation editing from
+            {{#1725797569932.text#}} to {{#1725794971908.target_lang#}}.
+        - id: 68b8273c-f77e-441c-9a24-48de1a4e0c88
+          role: user
+          text: "Your task is to carefully read, then edit, a translation from {{#1725797569932.text#}}\
+            \ to {{#1725794971908.target_lang#}}, taking into account a list of expert\
+            \ suggestions and constructive criticisms.\n\nThe source text, the initial\
+            \ translation, and the expert linguist suggestions are delimited by XML\
+            \ tags <SOURCE_TEXT></SOURCE_TEXT>, <TRANSLATION></TRANSLATION> and <EXPERT_SUGGESTIONS></EXPERT_SUGGESTIONS>\
+            \  as follows:\n\n<SOURCE_TEXT>\n{{#1725794971908.source_text#}}\n</SOURCE_TEXT>\n\
+            \n<TRANSLATION>\n{{#1725794998735.text#}}\n</TRANSLATION>\n\n<EXPERT_SUGGESTIONS>\n\
+            {{#1725795005689.text#}}\n</EXPERT_SUGGESTIONS>\n\nPlease take into account\
+            \ the expert suggestions when editing the translation. Edit the translation\
+            \ by ensuring:\n\n(i) accuracy (by correcting errors of addition, mistranslation,\
+            \ omission, or untranslated text),\n(ii) fluency (by applying {{#1725794971908.target_lang#}}\
+            \ grammar, spelling and punctuation rules and ensuring there are no unnecessary\
+            \ repetitions), \n(iii) style (by ensuring the translations reflect the\
+            \ style of the source text)\n(iv) terminology (inappropriate for context,\
+            \ inconsistent use), or\n(v) other errors.\n\nOutput only the new translation\
+            \ and nothing else, no instructions, XML tags, headlines etc."
+        selected: false
+        title: Improved translation LLM
+        type: llm
+        variables: []
+        vision:
+          configs:
+            detail: high
+          enabled: false
+      height: 142
+      id: '1725795012243'
+      position:
+        x: 892.1678517550267
+        y: 394.3361395246812
+      positionAbsolute:
+        x: 892.1678517550267
+        y: 394.3361395246812
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    - data:
+        context:
+          enabled: false
+          variable_selector: []
+        desc: Detect the source language of input text.
+        model:
+          completion_params:
+            temperature: 0
+          mode: chat
+          name: llama3.1:8b
+          provider: ollama
+        prompt_template:
+        - id: 42f0ca87-6bef-4d26-b2f3-26b9aa0bb3b4
+          role: system
+          text: 'You are a smart language type detector. You can detect the language
+            type, such as English, German, Chinese, and so on. Please check the user
+            input text and detect the language that the user has input.
+
+
+            Please remember to return only the full name of the language, not the
+            short name, such as English, Chinese, German, Japanese, and so on, do
+            not add any other additional information, leading text or instructions.'
+        - id: c361c259-ba87-4140-86a5-d10c209692a8
+          role: user
+          text: '{{#1725794971908.source_text#}}'
+        selected: false
+        title: Source lang LLM
+        type: llm
+        variables: []
+        vision:
+          enabled: false
+      height: 142
+      id: '1725797569932'
+      position:
+        x: -1.0830509384973652
+        y: 313.4126502437485
+      positionAbsolute:
+        x: -1.0830509384973652
+        y: 313.4126502437485
+      selected: false
+      sourcePosition: right
+      targetPosition: left
+      type: custom
+      width: 244
+    viewport:
+      x: 472.60099752847555
+      y: 176.59238026640904
+      zoom: 0.9414560121417743
